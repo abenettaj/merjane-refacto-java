@@ -1,10 +1,13 @@
 package com.nimbleways.springboilerplate.entities;
 
-import lombok.*;
-
-import java.time.LocalDate;
+import com.nimbleways.springboilerplate.enums.ProductType;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
 @Entity
 @Getter
@@ -24,8 +27,9 @@ public class Product {
     @Column(name = "available")
     private Integer available;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "type")
-    private String type;
+    private ProductType type;
 
     @Column(name = "name")
     private String name;
