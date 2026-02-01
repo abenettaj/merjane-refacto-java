@@ -65,7 +65,7 @@ public class ProductService {
                 log.debug("Decreasing available stock for seasonal product: {}", product.getName());
                 decrementProductAvailability(product);
                 productRepository.save(product);
-            } else if (isOutOfSeason(product)) {
+            } else if (isLeadInSeason(product)) {
                 log.info("Seasonal product {} out of stock, but can be restocked before end of season", product.getName());
                 notifyDelay(product.getLeadTime(), product);
             } else {
@@ -105,7 +105,7 @@ public class ProductService {
         return product.getAvailable() > 0;
     }
 
-    private boolean isOutOfSeason(Product product) {
+    private boolean isLeadInSeason(Product product) {
         return LocalDate.now().plusDays(product.getLeadTime()).isBefore(product.getSeasonEndDate());
     }
 
