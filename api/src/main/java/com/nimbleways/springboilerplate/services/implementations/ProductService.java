@@ -84,7 +84,7 @@ public class ProductService {
     @Transactional
     public void handleExpiredProduct(Product product) {
         log.debug("Handling expirable product: {} (expiry date: {})", product.getName(), product.getExpiryDate());
-        if (isAvailable(product) && product.getExpiryDate().isAfter(LocalDate.now())) {
+        if (isAvailable(product) && isNotExpired(product)) {
             log.debug("Decreasing available stock for non-expired product: {}", product.getName());
             decrementProductAvailability(product);
             productRepository.save(product);
@@ -95,6 +95,10 @@ public class ProductService {
             product.setAvailable(0);
             productRepository.save(product);
         }
+    }
+
+    private boolean isNotExpired(Product product) {
+        return product.getExpiryDate().isAfter(LocalDate.now());
     }
 
     private void decrementProductAvailability(Product product) {
